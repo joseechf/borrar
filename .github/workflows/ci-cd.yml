@@ -20,7 +20,7 @@ jobs:
           node-version: 22
 
       - name: ejecutar aplicacion
-        runs: node index.js
+        run: node index.js
 
   deploy:
     name: deploy
