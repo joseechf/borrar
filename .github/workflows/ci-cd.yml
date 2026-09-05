@@ -10,21 +10,21 @@ jobs:
     name: testing
     runs-on: ubuntu-latest
 
-  steps:
-    - name: descargar repositorios
-      uses: actions/checkouts@v4
+    steps:
+      - name: descargar repositorios
+        uses: actions/checkouts@v4
 
-    - name: configuracion node.jobs
-      uses: actions/setup-node@v4
-      with:
-        node-version: 22
+      - name: configuracion node.jobs
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
 
-    - name: ejecutar aplicacion
-      runs: node index.js
+      - name: ejecutar aplicacion
+        runs: node index.js
 
   deploy:
     name: deploy
-    needs: testing
+    needs: test
     runs-on: ubuntu-latest
 
     steps:
