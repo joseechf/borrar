@@ -1,34 +1,66 @@
-name: cdi cd prueba
+name: ci cd prueba
 
-on: 
+on:
   push:
-    branches: 
+    branches:
+      - main
+  pull_request:
+    branches:
       - main
 
 jobs:
   test:
-    name: testing
+    name: Test
     runs-on: ubuntu-latest
 
     steps:
-      - name: descargar repositorios
+      - name: Descargar repositorio
         uses: actions/checkout@v4
 
-      - name: configuracion node.jobs
+      - name: Configurar Node
         uses: actions/setup-node@v4
         with:
           node-version: 22
 
-      - name: ejecutar aplicacion
+      - name: Ejecutar aplicación
         run: node index.js
 
-  deploy:
-    name: deploy
+  build:
+    name: Build
     needs: test
     runs-on: ubuntu-latest
 
     steps:
+      - name: Descargar repositorio
+        uses: actions/checkout@v4
+
+      - name: Simular build
+        run: |
+          mkdir dist
+          cp index.js dist/index.js
+          echo "build completado"
+
+      - name: Guardar artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: app-build
+          path: dist/
+
+  deploy:
+    name: Deploy
+    needs: build
+    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Descargar artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: app-build
+
       - name: Simular deploy
         run: |
-          echo "iniciando despliegue"
-          echo "aplicacion desplegada"
+          echo "archivos recibidos:"
+          ls -la
+          echo "desplegando aplicación..."
+          node index.js
