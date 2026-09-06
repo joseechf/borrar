@@ -4,9 +4,6 @@ on:
   push:
     branches: 
       - main
-  pull_reuqest:
-    branches:
-      - main
 
 jobs:
   test:
@@ -17,7 +14,7 @@ jobs:
       - name: descargar repositorios
         uses: actions/checkout@v4
 
-      - name: configuracion node
+      - name: configuracion node.jobs
         uses: actions/setup-node@v4
         with:
           node-version: 22
@@ -25,39 +22,13 @@ jobs:
       - name: ejecutar aplicacion
         run: node index.js
 
-  build:
-    name: build
+  deploy:
+    name: deploy
     needs: test
     runs-on: ubuntu-latest
 
     steps:
-      - name: descargar repositorios
-        run: |
-          mkdir dist
-          cp index.js dist/index.js
-          echo "build completada"
-
-      - name: Guardar artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: app-build
-          path: dist/
-
-  deploy:
-    name: deploy
-    needs: 
-    if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: descargar artifact
-        uses: actions/download-artifact@v4
-        with: 
-          name: app-build
-
       - name: Simular deploy
         run: |
-          echo "archivos recividos"
-          ls -la
-          echo "aplicacion desplegada..."
-          node index.js
+          echo "iniciando despliegue"
+          echo "aplicacion desplegada"
