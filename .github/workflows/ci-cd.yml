@@ -37,7 +37,7 @@ jobs:
       - name: Simular build
         run: |
           mkdir dist
-          cp index.js suma.js package.json dist/
+          cp index.js suma.js dist/
           echo "build completado"
 
       - name: Guardar artifact
