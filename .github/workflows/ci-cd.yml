@@ -22,8 +22,8 @@ jobs:
         with:
           node-version: 22
 
-      - name: Ejecutar aplicación
-        run: node index.js
+      - name: Ejecutar test
+        run: node --test
 
   build:
     name: Build
